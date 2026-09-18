@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reviews</title>
+  <link rel="stylesheet" href="static/style.css">
+  <!-- Font for star icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+<nav class="nav">
+  <div class="flex-container">
+    <h1 class="logo"><a href="{{ url_for('home') }}"><img src = static/Brewing.png>Brewing</a></h1>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('learn_more_page') }}">About</a></li>
+      <li><a href="{{ url_for('login_page') }}">Login</a></li>
+      <li><a href="{{ url_for('reviews_page') }}">Reviews</a></li>
+      <li><a href="{{ url_for('menu_page') }}">Menu</a></li>
+    </ul>
+  </div>
+</nav>
+
+  <main class="reviews-main">
+    <!-- Header -->
+    <header class="reviews-header">
+      <div>
+        <h2>Write a Review</h2>
+        <p>Share your thoughts!</p>
+      </div>
+    </header>
+
+    <section class="reviews-layout">
+      <section class="review-form-card" id="write-review">
+        <h3>Write a Review</h3>
+        <!-- Shop Selector (Which Shop to Be Submitted for Review)-->
+        <div class="form-group">
+          <label for="reviewShop">Coffee Shop</label>
+          <select id="reviewShop" name="reviewShop">
+            <option value="">Choose a shop</option>
+          </select>
+        </div>
+
+        <!-- HOW TO - Star Rating: https://www.w3schools.com/howto/howto_css_star_rating.asp -->
+        <div class="form-group">
+          <span>Rating</span>
+          <div class="star-rating">
+            <span class="fa fa-star" data-value="1"></span>
+            <span class="fa fa-star" data-value="2"></span>
+            <span class="fa fa-star" data-value="3"></span>
+            <span class="fa fa-star" data-value="4"></span>
+            <span class="fa fa-star" data-value="5"></span>
+          </div>
+        </div>
+
+        <!-- Review Text Area-->
+        <div class="form-group">
+          <label for="reviewText">Your experience</label>
+          <textarea id="reviewText" rows="4" placeholder="Write Review Here"></textarea>
+        </div>
+
+        <button class="primary-btn" type="button">
+          Submit Review
+        </button>
+      </section>
+
+      <!-- Shop Selector (Which Reviews Show Up)-->
+      <div class="reviews-filters">
+        <label for="shopFilter">Past Reviews</label>
+        <select id="shopFilter" name="shopFilter">
+          <option value="">Choose a shop</option>
+        </select>
+      </div>
+
+      <!-- Recent Reviews-->
+      <section class="reviews-list">
+        <h3>Recent Reviews</h3>
+        <p id="reviews-empty" class="reviews-empty">
+          Choose a coffee shop to see its reviews.
+        </p>
+        <div id="reviews-container"></div>
+      </section>
+
+
+
+    </section>
+  </main>
+
+  <script src="/static/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const shopFilter = document.getElementById("shopFilter");
+  const reviewShop = document.getElementById("reviewShop");
+  const reviewsBox = document.getElementById("reviews-container");
+  const emptyMsg = document.getElementById("reviews-empty");
+  const stars = document.querySelectorAll(".star-rating .fa");
+  const reviewText = document.getElementById("reviewText");
+  const submitBtn = document.querySelector(".primary-btn");
+
+  const token = localStorage.getItem("accessToken") || "";
+  let rating = 0;
+
+  /* Enable or disable submit button */
+  function updateSubmitState() {
+    const shopChosen = !!reviewShop.value;
+    const hasRating = rating > 0;
+    const hasText = reviewText.value.trim().length > 0;
+
+    if (shopChosen && hasRating && hasText) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("disabled-btn");
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.add("disabled-btn");
+    }
+  }
+
+  submitBtn.disabled = true;
+
+  /* Star Rating — Clickable */
+  stars.forEach(star => {
+    star.addEventListener("click", () => {
+      rating = Number(star.dataset.value);
+      stars.forEach(s =>
+        s.classList.toggle("checked", Number(s.dataset.value) <= rating)
+      );
+      updateSubmitState();
+    });
+  });
+
+  /* Load Shops Into Dropdowns */
+  async function loadShops() {
+    try {
+      const res = await fetch("/shops");
+      if (!res.ok) return;
+
+      const shops = await res.json();
+      [shopFilter, reviewShop].forEach(sel => {
+        while (sel.options.length > 1) sel.remove(1);
+      });
+
+      shops.forEach(shop => {
+        const optionFilter = document.createElement("option");
+        optionFilter.value = shop.shop_id;
+        optionFilter.textContent = shop.shop_name;
+        shopFilter.appendChild(optionFilter);
+
+        const optionReview = document.createElement("option");
+        optionReview.value = shop.shop_id;
+        optionReview.textContent = shop.shop_name;
+        reviewShop.appendChild(optionReview);
+      });
+    } catch (e) {
+      console.error("Failed to load shops:", e);
+    }
+  }
+
+  /* Load Reviews For Shop */
+  async function loadReviews(shopId) {
+    reviewsBox.innerHTML = "";
+
+    if (!shopId) {
+      emptyMsg.textContent = "Choose a coffee shop to see its reviews.";
+      emptyMsg.style.display = "block";
+      return;
+    }
+
+    try {
+      const res = await fetch(`/shops/${shopId}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const reviews = data.reviews || [];
+
+      if (reviews.length === 0) {
+        emptyMsg.textContent = "No reviews yet for this shop.";
+        emptyMsg.style.display = "block";
+      } else {
+        emptyMsg.style.display = "none";
+      }
+
+      reviews.forEach(r => {
+        const card = document.createElement("article");
+        card.className = "review-card";
+
+        const header = document.createElement("div");
+        header.className = "review-card-header";
+
+        const left = document.createElement("div");
+
+        const title = document.createElement("h4");
+        title.textContent = data.shop_name;
+
+        const starsP = document.createElement("p");
+        starsP.className = "review-stars";
+        starsP.textContent =
+          "★★★★★".slice(0, r.rating) + "☆☆☆☆☆".slice(r.rating);
+
+        left.appendChild(title);
+        left.appendChild(starsP);
+
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "review-date";
+        if (r.date) dateSpan.textContent = new Date(r.date).toLocaleDateString();
+
+        header.appendChild(left);
+        header.appendChild(dateSpan);
+
+        const body = document.createElement("p");
+        body.className = "review-text";
+        body.textContent = r.text || "";
+
+        card.appendChild(header);
+        card.appendChild(body);
+        reviewsBox.appendChild(card);
+      });
+    } catch (e) {
+      console.error("Failed to load reviews:", e);
+    }
+  }
+
+  /* Event listeners */
+  shopFilter.addEventListener("change", () => {
+    const id = shopFilter.value;
+    loadReviews(id);
+    updateSubmitState();
+  });
+
+  reviewShop.addEventListener("change", updateSubmitState);
+  reviewText.addEventListener("input", updateSubmitState);
+
+  submitBtn.addEventListener("click", async () => {
+    const shopId = reviewShop.value;
+    const text = reviewText.value.trim();
+
+    try {
+      const res = await fetch(`/shops/${shopId}/reviews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ rating, review_text: text })
+      });
+
+      if (!res.ok) return;
+
+      // Reset selections
+      rating = 0;
+      stars.forEach(s => s.classList.remove("checked"));
+      reviewText.value = "";
+      reviewShop.value = "";
+
+      updateSubmitState();
+
+      // Reload reviews if currently filtered shop matches
+      if (shopFilter.value === shopId) loadReviews(shopId);
+    } catch (e) {
+      console.error("Failed to submit review:", e);
+    }
+  });
+
+  /* Initial load */
+  loadShops();
+  updateSubmitState();
+});
+
+  </script>
+
+</body>
+</html>

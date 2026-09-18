@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+  <!-- Navigation bar -->
+  <nav class="nav">
+    <div class="flex-container">
+      <h1 class="logo"><a href="{{ url_for('home') }}"><img src = static/Brewing.png>Brewing</a></h1>
+      <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('learn_more_page') }}">About</a></li>
+        <li><a href="{{ url_for('login_page') }}">Login</a></li>
+        <li><a href="{{ url_for('reviews_page') }}">Reviews</a></li>
+        <li><a href="{{ url_for('menu_page') }}">Menu</a></li>
+      </ul>
+    </div>
+</nav>
+
+
+  <!-- Menu Page Content -->
+  <div class="reviews-main">
+    
+    <!-- Shop Selector -->
+    <div class="menu-shop-selector">
+      <h1>Menu</h1>
+      <p>Select a coffee shop to view their menu</p>
+      <select id="shopSelect">
+        <option value="">Choose a Coffee Shop</option>
+      </select>
+    </div>
+
+    <!-- Shop Info -->
+    <div id="shopInfo" class="review-form-card" style="display: none;">
+      <h2 id="shopName"></h2>
+      <p id="shopDescription"></p>
+      <div class="shop-contact">
+        <span id="shopPhone"></span>
+        <span id="shopWebsite"></span>
+      </div>
+
+      <!-- Menu Items by Category -->
+    <div id="menuDisplay" >
+      <div class="menu-empty">
+        <p>Select a coffee shop above to view their menu</p>
+      </div>
+    </div>
+    </div>
+
+    
+
+  </div>
+
+  <script src="/static/script.js"></script>
+  
+  <script>
+    const API_BASE = 'http://127.0.0.1:5000';
+
+// Load shops on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadShops();
+  const shopSelect = document.getElementById('shopSelect');
+  if (shopSelect) {
+    shopSelect.addEventListener('change', function() {
+      const shopId = this.value;
+      if (shopId) {
+        loadShopMenu(shopId);
+      } else {
+        resetMenu();
+      }
+    });
+  }
+});
+
+// Load available coffee shops
+async function loadShops() {
+  try {
+    console.log('Fetching shops from:', `${API_BASE}/shops`);
+    const response = await fetch(`${API_BASE}/shops`);
+    console.log('Response status:', response.status);
+    if (!response.ok) throw new Error('Failed to load shops');
+    const shops = await response.json();
+    console.log('Shops loaded:', shops);
+
+    const select = document.getElementById('shopSelect');
+    shops.forEach(shop => {
+      const option = document.createElement('option');
+      option.value = shop.shop_id;
+      option.textContent = shop.shop_name;
+      select.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error loading shops:', error);
+    const menuDisplay = document.getElementById('menuDisplay');
+    if (menuDisplay) {
+      menuDisplay.innerHTML = 
+        `<div class="menu-empty"><p>Error loading coffee shops</p></div>`;
+    }
+  }
+}
+
+// Load menu for selected shop
+async function loadShopMenu(shopId) {
+  const menuDisplay = document.getElementById('menuDisplay');
+  if (menuDisplay) {
+    menuDisplay.innerHTML = '<div class="menu-empty"><p>Loading menu...</p></div>';
+  }
+
+  try {
+    console.log('Fetching shop data for shop_id:', shopId);
+    const response = await fetch(`${API_BASE}/shops/${shopId}`);
+    console.log('Shop response status:', response.status);
+    if (!response.ok) throw new Error('Failed to load shop data');
+    const shopData = await response.json();
+    console.log('Shop data received:', shopData);
+    console.log('Menu items:', shopData.menu_items);
+
+    // Display shop info
+    displayShopInfo(shopData);
+
+    // Display menu
+    displayMenu(shopData.menu_items);
+  } catch (error) {
+    console.error('Error loading menu:', error);
+    if (menuDisplay) {
+      menuDisplay.innerHTML = `<div class="menu-empty"><p>Error loading menu: ${error.message}</p></div>`;
+    }
+  }
+}
+
+// Display shop information
+function displayShopInfo(shop) {
+  const shopInfo = document.getElementById('shopInfo');
+  if (!shopInfo) return;
+
+  document.getElementById('shopName').textContent = shop.shop_name;
+  document.getElementById('shopDescription').textContent = shop.description || '';
+  document.getElementById('shopPhone').textContent = shop.phone_num ? `📞 ${shop.phone_num}` : '';
+  document.getElementById('shopWebsite').innerHTML = shop.website 
+    ? `🌐 <a href="${shop.website}" target="_blank">${shop.website}</a>` 
+    : '';
+  shopInfo.style.display = 'block';
+}
+
+// Display menu organized by category
+function displayMenu(menuItems) {
+  const menuDisplay = document.getElementById('menuDisplay');
+  if (!menuDisplay) return;
+
+  if (!menuItems || menuItems.length === 0) {
+    menuDisplay.innerHTML = '<div class="menu-empty"><p>No menu items available for this shop.</p></div>';
+    return;
+  }
+
+  // Group items by category
+  const categories = {};
+  menuItems.forEach(item => {
+    const category = item.category || 'other';
+    if (!categories[category]) {
+      categories[category] = [];
+    }
+    categories[category].push(item);
+  });
+
+  let html = '';
+  for (const [categoryName, items] of Object.entries(categories)) {
+    html += `
+      <div class="menu-category-section">
+        <h3 class="menu-category-title">${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}</h3>
+        <div class="menu-items-rows">
+          ${items.map(item => `
+            <div class="menu-item-row">
+              <div class="menu-item-details">
+                <h4 class="menu-item-name">${escapeHtml(item.item_name)}</h4>
+                ${item.description ? `<p class="menu-item-desc">${escapeHtml(item.description)}</p>` : ''}
+              </div>
+              <div class="menu-item-price">$${parseFloat(item.price).toFixed(2)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  menuDisplay.innerHTML = html;
+}
+
+// Reset menu display
+function resetMenu() {
+  const shopInfo = document.getElementById('shopInfo');
+  if (shopInfo) shopInfo.style.display = 'none';
+  
+  const menuDisplay = document.getElementById('menuDisplay');
+  if (menuDisplay) {
+    menuDisplay.innerHTML = 
+      '<div class="menu-empty"><p>Select a coffee shop above to view their menu</p></div>';
+  }
+}
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+  </script>
+
+</body>
+</html>

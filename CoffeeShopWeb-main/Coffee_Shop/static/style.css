@@ -1,0 +1,994 @@
+/* https://medium.com/@lostcoder20/how-to-create-a-modern-login-and-signup-form-page-html-css-tutorial-3805222d3334*/
+
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-top: 20px;
+}
+
+/* navigation bar */
+.nav {
+  position: fixed;
+  background-color: #4E1411;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 0;
+  z-index: 10; 
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+.nav ul {
+  display: flex;
+  list-style-type: none;
+  gap: 20px;
+}
+
+.nav a {
+  color: #f2f2f2;
+  text-decoration: none;
+  padding: 7px 15px;
+}
+
+/* logo*/
+.logo img {
+  height: 50px;
+  width: auto; 
+  vertical-align: middle;
+}
+
+/* hero image under navigation bar
+https://www.w3schools.com/howto/howto_css_hero_image.asp 
+    */
+    
+.hero-image {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.squarespace-cdn.com/content/v1/5659e2c8e4b0fad364ec94ae/1676303662264-2BGT8WX5KOOQNK30SG8G/Qahwah+House+Interior+Design+Z+North+Studio+%282%29.jpg");
+  
+  height: 100vh;      /* full screen */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  margin-top: 80px;    /* offset for fixed navbar */
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.hero-text button {
+  padding: 12px 28px;
+  background-color: #EBBBA3;
+  cursor: pointer;
+  border-radius: 25px;
+  border: 2px solid #EBBBA3;
+
+}
+
+.hero-text button:hover {
+  background-color: #4E1411;
+  color: white;
+}
+
+/*Signup form*/
+/* css for:
+- sign up form tutorial https://www.youtube.com/watch?v=3vVUXnhSc7w
+- transitions: https://www.w3schools.com/css/css3_transitions.asp
+*/
+
+.signup-body {
+    font-family: Arial, Helvetica, sans-serif;
+    /*make gradient background: https://www.w3schools.com/css/css3_gradients.asp*/
+    background: linear-gradient(135deg, #EDD0A5, #4E1411);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    line-height: 1.5;
+}
+/*container for form*/
+.signup-form {
+    width: 400px;
+    background-color: white; 
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 20px rgba(239, 235, 235, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.form-container {
+    width: 100%;
+}
+/*header for form*/
+.form-container h2 {
+    text-align: center;
+    color: #4E1411;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/*Signup form input fields*/
+.form-container form input[type="text"],
+.form-container form input[type="password"] {
+    width: 90%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #4E1411;
+    border-radius: 8px;
+    background-color: white; 
+    color: #4E1411;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.form-container form input[type="text"]:focus,
+.form-container form input[type="password"]:focus {
+    border-color: #EBBBA3;
+    outline: none;
+    box-shadow: 0 0 5px #EBBBA3;
+}
+
+.form-container form input[type="submit"] {
+    width: 50%;
+    padding: 12px;
+    background-color: #4E1411;
+    color: #EBBBA3;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0 auto;
+    display: block;  
+}
+
+.form-container form input[type="submit"]:hover {
+    background-color: #EBBBA3;
+    color: #4E1411;
+}
+
+/* drop down menu for user select */
+.form-container form select {
+    width: 99%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #4E1411;
+    border-radius: 8px;
+    background-color: white;
+    color: #4E1411;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.form-container form select:focus {
+    border-color: #EBBBA3;
+    outline: none;
+    box-shadow: 0 0 5px #EBBBA3;
+}
+
+/*login form*/
+/* css for login form tutorial https://www.youtube.com/watch?v=3vVUXnhSc7w*/
+
+.login-body {
+    font-family: Arial, Helvetica, sans-serif;
+    /*make gradient background: https://www.w3schools.com/css/css3_gradients.asp*/
+    background: linear-gradient(135deg,#4E1411, #EDD0A5);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    line-height: 1.5;
+}
+/*container for form*/
+.login-form {
+    width: 400px;
+    background-color: white; 
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 20px rgba(239, 235, 235, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.loginform-container {
+    width: 100%;
+}
+/*header for form*/
+.loginform-container h2 {
+    text-align: center;
+    color: #4E1411;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/*login form input fields*/
+.loginform-container form input[type="text"],
+.loginform-container form input[type="password"] {
+    width: 90%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 2px solid #4E1411;
+    border-radius: 8px;
+    background-color: white; 
+    color: #4E1411;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.loginform-container form input[type="text"]:focus,
+.loginform-container form input[type="password"]:focus {
+    border-color: #EBBBA3;
+    outline: none;
+    box-shadow: 0 0 5px #EBBBA3;
+}
+
+.loginform-container form input[type="submit"] {
+    width: 50%;
+    padding: 12px;
+    background-color: #4E1411;
+    color: #EBBBA3;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0 auto;
+    display: block;  
+}
+
+.loginform-container form input[type="submit"]:hover {
+    background-color: #EBBBA3;
+    color: #4E1411;
+}
+
+/*learn more section*/
+.about-coffee {
+    background: linear-gradient(135deg, #EBBBA3, #4E1411);
+    padding: 70px 25px;
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    margin: 100px auto;
+    max-width: 900px;
+  }
+  
+  .about-coffee h2 {
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+  
+  .about-coffee p {
+    font-size: 18px;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+  
+ /*coffee cards
+ How TO - Cards: https://www.w3schools.com/howto/howto_css_cards.asp*/ 
+  .coffee-lists {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+  }
+  
+  .coffee-list {
+    background: #EBBBA3;
+    padding: 20px 30px;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #4E1411;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform .2s ease;
+  }
+  
+  .coffee-list:hover {
+  /* make cards vertical: https://www.w3schools.com/cssref/func_translatey.php */
+    transform: translateY(-5px);
+  }
+
+/* REVIEWS PAGE */
+.reviews-main {
+  background: linear-gradient(135deg, #edd0a5, #4e1411);
+  padding: 40px 40px;
+  margin: 130px auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1100px;
+  box-sizing: border-box;
+}
+
+/* Header area at top of reviews card */
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.reviews-header h2 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.reviews-header p {
+  margin: 0;
+  color: #f6e7da;
+  font-size: 14px;
+}
+
+/* Filter dropdown */
+.reviews-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.reviews-filters label {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.reviews-filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #4e1411;
+  font-family: inherit;
+}
+
+/* Layout */
+.reviews-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Card for the write-review form */
+.review-form-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.review-form-card h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #4e1411;
+}
+
+/* Form groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.form-group label,
+.form-group span {
+  font-weight: bold;
+  color: #4e1411;
+}
+
+/* Inputs in review form */
+.review-form-card select,
+.review-form-card textarea {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #4e1411;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.review-form-card textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Star rating */
+.star-rating {
+  display: flex;
+  gap: 4px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.star-rating .fa {
+  color: #cccccc;
+  transition: color 0.2s ease;
+}
+
+.star-rating .fa.checked {
+  color: #4e1411;
+}
+
+/* Submit button for review */
+.primary-btn {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background-color: #4e1411;
+  color: #ebbba3;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #ebbba3;
+  color: #4e1411;
+}
+
+/* Recent reviews list header */
+.reviews-list h3 {
+  margin: 0 0 10px 0;
+  color: #ffffff;
+}
+
+/* Message when there are no reviews */
+#reviews-empty {
+  font-size: 14px;
+  color: #f6e7da;
+  margin-top: 4px;
+}
+
+/* Container for loaded review cards */
+#reviews-container {
+  margin-top: 8px;
+}
+
+/* Single review card */
+.review-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  transition: 0.3s;
+}
+
+.review-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Header inside each card */
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.review-card-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #4e1411;
+}
+
+/* Stars text in card */
+.review-stars {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  color: #4e1411;
+}
+
+/* Date text in card */
+.review-date {
+  font-size: 12px;
+  color: #888;
+}
+
+/* Main review body text */
+.review-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .reviews-main {
+    padding: 24px 20px;
+    margin: 110px auto 40px;
+  }
+
+  .reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* MENU PAGE  */
+.menu-wrapper {
+  margin-top: 80px;
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* Hero section with shop selector */
+.menu-hero {
+  background: linear-gradient(135deg, #4e1411, #EBBBA3);
+  padding: 60px 20px 40px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.menu-hero h1 {
+  margin: 0 0 15px 0;
+  font-size: 48px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.menu-hero p {
+  margin: 0 0 25px 0;
+  font-size: 18px;
+  opacity: 0.95;
+}
+
+.menu-page-container {
+  margin-top: 100px;
+}
+
+/* Shop selector in hero */
+.shop-selector {
+  max-width: 500px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.2);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.shop-selector select {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #4e1411;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.shop-selector select:focus {
+  outline: 3px solid #EDD0A5;
+}
+
+/* Main content area */
+.menu-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Shop info banner */
+.shop-info {
+  background: white;
+  border-left: 6px solid #4e1411;
+  padding: 25px 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  display: none;
+}
+
+.shop-info.active {
+  display: block;
+}
+
+.shop-info h2 {
+  margin: 0 0 12px 0;
+  color: #4e1411;
+  font-size: 32px;
+}
+
+.shop-info-details {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 15px;
+}
+
+.shop-info-details span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-info .description {
+  color: #555;
+  line-height: 1.6;
+  font-size: 16px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Layout with sidebar categories */
+.menu-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Category sidebar */
+.category-sidebar {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 100px;
+}
+
+.category-sidebar h3 {
+  margin: 0 0 15px 0;
+  color: #4e1411;
+  font-size: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #EBBBA3;
+}
+
+.category-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-nav li {
+  margin-bottom: 8px;
+}
+
+.category-nav button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 8px;
+  color: #4e1411;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.category-nav button:hover {
+  background: #EDD0A5;
+  transform: translateX(5px);
+}
+
+.category-nav button.active {
+  background: #4e1411;
+  color: #EBBBA3;
+  font-weight: bold;
+}
+
+/* Menu items section */
+.menu-section {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.category-section {
+  margin-bottom: 50px;
+}
+
+.category-section:last-child {
+  margin-bottom: 0;
+}
+
+.category-title {
+  display: inline-block;
+  background: #4e1411;
+  color: #EBBBA3;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-transform: capitalize;
+  box-shadow: 0 3px 8px rgba(78,20,17,0.3);
+}
+
+/* Menu items list/table style */
+.menu-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fafafa;
+  border-left: 4px solid #EBBBA3;
+  transition: all 0.2s;
+}
+
+.menu-item:hover {
+  background: #f0f0f0;
+  border-left-color: #4e1411;
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.menu-item-info {
+  flex: 1;
+}
+
+.menu-item-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4e1411;
+  margin: 0 0 8px 0;
+}
+
+.menu-item-description {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.menu-item-price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4e1411;
+  white-space: nowrap;
+  margin-left: 20px;
+  padding: 5px 15px;
+  background: #EBBBA3;
+  border-radius: 20px;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+}
+
+.empty-state h3 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #4e1411;
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: #888;
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: #4e1411;
+  font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .menu-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .category-sidebar {
+    position: static;
+    margin-bottom: 20px;
+  }
+
+  .category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .category-nav li {
+    margin-bottom: 0;
+  }
+
+  .category-nav button {
+    padding: 10px 18px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-hero h1 {
+    font-size: 36px;
+  }
+
+  .menu-item {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .menu-item-price {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+
+  .shop-info-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+ 
+/* portal*/
+
+.portal-body {
+  font-family: Arial, Helvetica, sans-serif;
+  /*make gradient background: https://www.w3schools.com/css/css3_gradients.asp*/
+  background: linear-gradient(135deg,#4E1411, #EDD0A5);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  line-height: 1.5;
+}
+/*container for form*/
+.portal-form-container {
+  width: 100%;
+}
+
+.portal-form {
+  width: 1000px;
+  background-color: white; 
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 20px rgba(239, 235, 235, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*header for form
+creating outline of text: 
+https://stackoverflow.com/questions/4772906/css-is-it-possible-to-add-
+a-black-outline-around-each-character-in-text
+*/
+
+.portal-form-container h1 {
+  text-align: center;
+  color: #4E1411;
+  text-shadow: #EBBBA3 0px 0px 5px;
+  margin-bottom: 25px;
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.portal-form-container h2 {
+  text-align: left;
+  color: #4E1411;
+  margin-bottom: 25px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/*input fields*/
+.portal-form input {
+  width: 15%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 2px solid #4E1411;
+  border-radius: 8px;
+  background-color: white; 
+  color: #4E1411;
+  font-size: 16px;
+  transition: 0.3s;
+  display: inline;
+}
+
+/*menu category dropdown 
+https://www.w3schools.com/css/css_selectors.asp*/
+#menuCategory {
+  width: 15%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 2px solid #4E1411;
+  height: 46px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: white; 
+  color: #4E1411;
+  font-size: 16px;
+  transition: 0.3s;
+}
+/* btn class */
+.btn{
+  display: flex;
+  width: 20%;
+  padding: 12px;
+  background-color: #4E1411;
+  color: #EBBBA3;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 0 auto; 
+  display: inline;
+}
+
+.btn:hover {
+  background-color: #EBBBA3;
+  color: #4E1411;
+}
+
+/* shop-card class */
+
+.shop-card-container {
+  width: 100%;
+  margin: 35px;
+  padding: 20;
+  color: #4e1411;
+}
+.shop-card {
+  font-family: Arial, Helvetica, sans-serif;
+  color:#4E1411;
+  font-size: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 2px solid #4E1411;
+  line-height: 1.5;
+}
+
+.shop-card p {
+  white-space: normal; 
+  word-break: break-word; 
+}

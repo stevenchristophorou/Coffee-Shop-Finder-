@@ -1,0 +1,29 @@
+Download folder
+
+Download MySQL (server and workbench) ----- https://dev.mysql.com/downloads/installer/
+	(Make sure to create a password, if left empty it can cause problems when trying to load database)
+	(If you want to use MySQL shell in windows terminal, instead of in the shell itself, you need to add MySQL shell exe to system environment variable PATH)
+Add .sql file to mySQL workbench
+
+Add a file named .env to Coffee_Shop and put in 
+	SQL_USER=root
+	SQL_PASSWORD=root
+	SQL_HOST=localhost
+	SQL_PORT=3306
+	SQL_DB=coffeeshop
+In the .env file enter your mySQL username and password after SQL_USER and SQL_PASSWORD
+
+Create python virtual environment (CTRL + SHIFT + P in VSCode, then search for Python: Create Environment)
+Activate the virtual environment with .venv/scripts/activate in VSCode terminal
+
+Download necessary packages in activated virtual environment terminal
+	pip install Flask Flask-SQLAlchemy Flask-Bcrypt flask-jwt-extended python-dotenv pymysql cryptography
+	
+In windows terminal (after entering mysql -u YOUR_USERNAME -p) or in MySQL shell (\sql to enter sql mode, then \connect YOUR_USERNAME@localhost:3306) enter: CREATE DATABASE coffeeshop;
+	(YOUR_USERNAME is your mySQL username)
+
+In virtual environment terminal enter flask initdb, then flask prepopulatedb to prepopulate the database
+Enter python app.py to run the web app and click the http link it is running on in the terminal
+
+
+
